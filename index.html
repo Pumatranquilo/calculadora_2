@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Neon com Sons</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #121212;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .calculator {
+            background: #1f1f1f;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 255, 255, 0.6);
+            width: 400px;
+            padding: 30px;
+        }
+
+        .display {
+            width: 100%;
+            height: 60px;
+            background: #2a2a2a;
+            border: none;
+            border-radius: 10px;
+            font-size: 2em;
+            text-align: right;
+            padding: 15px;
+            box-sizing: border-box;
+            color: #39ff14;
+            margin-bottom: 20px;
+            outline: none;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        button {
+            height: 60px;
+            font-size: 1.5em;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: transform 0.2s ease, background 0.3s ease;
+        }
+
+        button:hover {
+            transform: scale(1.1);
+        }
+
+        .button-operator {
+            background: #ff007f;
+            color: #fff;
+            box-shadow: 0 4px 10px rgba(255, 0, 127, 0.6);
+        }
+
+        .button-operator:hover {
+            background: #ff1493;
+            box-shadow: 0 4px 20px rgba(255, 0, 127, 0.8);
+        }
+
+        .button-equal {
+            background: #39ff14;
+            color: #121212;
+            box-shadow: 0 4px 10px rgba(57, 255, 20, 0.6);
+        }
+
+        .button-equal:hover {
+            background: #00ff00;
+            box-shadow: 0 4px 20px rgba(57, 255, 20, 0.8);
+        }
+
+        .button-clear {
+            background: #ffcc00;
+            color: #121212;
+            box-shadow: 0 4px 10px rgba(255, 204, 0, 0.6);
+        }
+
+        .button-clear:hover {
+            background: #ffdd00;
+            box-shadow: 0 4px 20px rgba(255, 204, 0, 0.8);
+        }
+
+        .button-delete {
+            background: #ff6600;
+            color: #fff;
+            box-shadow: 0 4px 10px rgba(255, 102, 0, 0.6);
+        }
+
+        .button-delete:hover {
+            background: #ff4500;
+            box-shadow: 0 4px 20px rgba(255, 102, 0, 0.8);
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <input type="text" id="display" class="display" disabled />
+        <div class="buttons">
+            <button class="button-clear" onclick="clearDisplay()">C</button>
+            <button onclick="appendValue('7')">7</button>
+            <button onclick="appendValue('8')">8</button>
+            <button onclick="appendValue('9')">9</button>
+            <button class="button-operator" onclick="appendValue('/')">/</button>
+            <button onclick="appendValue('4')">4</button>
+            <button onclick="appendValue('5')">5</button>
+            <button onclick="appendValue('6')">6</button>
+            <button class="button-operator" onclick="appendValue('*')">×</button>
+            <button onclick="appendValue('1')">1</button>
+            <button onclick="appendValue('2')">2</button>
+            <button onclick="appendValue('3')">3</button>
+            <button class="button-operator" onclick="appendValue('-')">-</button>
+            <button onclick="appendValue('0')">0</button>
+            <button onclick="appendValue('.')">.</button>
+            <button class="button-equal" onclick="calculate()">=</button>
+            <button class="button-operator" onclick="appendValue('+')">+</button>
+            <button class="button-delete" onclick="deleteLast()">←</button>
+        </div>
+    </div>
+
+    <!-- Sons -->
+    <audio id="click-sound" src="1.mp3" preload="auto"></audio>
+    <audio id="equal-sound" src="2.mp3" preload="auto"></audio>
+    <audio id="clear-sound" src="3.mp3" preload="auto"></audio>
+    <audio id="delete-sound" src="4.mp3" preload="auto"></audio>
+
+    <script>
+        const display = document.getElementById('display');
+
+        function playSound(soundId) {
+            document.getElementById(soundId).play();
+        }
+
+        function appendValue(value) {
+            display.value += value;
+            playSound('click-sound');
+        }
+
+        function calculate() {
+            try {
+                display.value = eval(display.value);
+                playSound('equal-sound');
+            } catch {
+                display.value = "Error";
+                playSound('clear-sound');
+            }
+        }
+
+        function clearDisplay() {
+            display.value = "";
+            playSound('clear-sound');
+        }
+
+        function deleteLast() {
+            display.value = display.value.slice(0, -1);
+            playSound('delete-sound');
+        }
+    </script>
+</body>
+</html>
